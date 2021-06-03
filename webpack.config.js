@@ -49,6 +49,12 @@ module.exports = {
                 options:{
                     esModule:false
                 }
+            },
+            // 打包其他资源  js/css/html/json/less以外的资源（如js/css等资源前面已经配置了处理的loader这里将这些资源全部排除掉即可，这里使用过排除法，排除那些已经做过处理的文件类型，剩下的类型交友file-loader处理）
+            {
+                // exclude 排除制定文件之外的资源
+                exclude:/\.(js|css|html|less|json|jpg|jpeg)$/,
+                loader:'file-loader'
             }
         ]
     },

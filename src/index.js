@@ -16,6 +16,7 @@ index.js  webpack入口起点文件
 import dataJson from './data.json'
 import './index.css'
 import './index.less'
+import './iconfont/iconfont.css'
 function add(x,y){
     return x + y
 }
