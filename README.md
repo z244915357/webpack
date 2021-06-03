@@ -8,3 +8,5 @@ npm run dev
 
 打包生产环境代码
 npm run prod 
+
+webpack 搭建基本的开发环境，搭建基本配置
