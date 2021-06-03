@@ -13,12 +13,13 @@ index.js  webpack入口起点文件
   能将es6代码模块化编译，生产环境能压缩代码
 
 */ 
-import dataJson from './data.json'
-import './index.css'
-import './index.less'
+import dataJson from './json/data.json'
+import './css/index.css'
+import './css/index.less'
 import './iconfont/iconfont.css'
 function add(x,y){
     return x + y
 }
 console.log(add(1,2))
 console.log(dataJson)
+console.log('12312312312')

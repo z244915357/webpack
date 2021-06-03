@@ -9,7 +9,7 @@ module.exports = {
     // 当不使用webpack-dev-server时 ，使用手动打包指令 开发打包 npm run dev  packjson文件有注释  需要制定入口文件 entry : './src/index.js'
     entry : './src',
     output: {
-        filename:'main.js',
+        filename:'js/main.js',
         path:resolve(__dirname,'dist')
     },
     module:{
@@ -21,7 +21,8 @@ module.exports = {
                 use:[
                     'style-loader',
                     'css-loader'
-                ]
+                ],
+                
             },
             // less-loader 处理less 类型的文件
             {
@@ -40,8 +41,9 @@ module.exports = {
                     // 图片小于64 将使用base64处理
                     limit:8 * 1024,
                     //hash:10 按10个字符 ext 按默认文件类型 命名
-                    name:'[hash:10].[ext]'
-                }
+                    name:'[hash:10].[ext]',
+                    outputPath:'imgs'     
+                },
             },
             // url-loader 不能处理html文件中的img引入文件 所有需要使用html-loader 进行处理引入文件
             {
@@ -57,7 +59,10 @@ module.exports = {
             {
                 // exclude 排除制定文件之外的资源
                 exclude:/\.(js|css|html|less|json|jpg|jpeg)$/,
-                loader:'file-loader'
+                loader:'file-loader',
+                options:{
+                    outputPath:'media'  
+                }
             }
         ]
     },

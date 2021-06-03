@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack ./src/index.js -o ./dist --mode=development",
-    "prod": "webpack ./src/index.js -o ./dist --mode=production"
+    "prod": "webpack ./src/index.js -o ./dist --mode=production",
+    "wk": "npx webpack serve"
   },
   "author": "",
   "license": "ISC",
