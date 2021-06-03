@@ -4,10 +4,13 @@ const { resolve } = require('path')
 const htmlWebpackplugin = require('html-webpack-plugin')
 
 module.exports = {
-    entry : './src/index/js',
+    // 使用webpack-cli 4.0版本 webpack-dev-server启动服务时 entry 默认会找寻src目录下的index.js文件
+    // 不必使用指定绝对路劲  ./src/index.js   使用 entry: './src'即可
+    // 当不使用webpack-dev-server时 ，使用手动打包指令 开发打包 npm run dev  packjson文件有注释  需要制定入口文件 entry : './src/index.js'
+    entry : './src',
     output: {
-        filename:'build.js',
-        path:resolve(__dirname,'build')
+        filename:'main.js',
+        path:resolve(__dirname,'dist')
     },
     module:{
         rules:[
@@ -68,5 +71,20 @@ module.exports = {
         })
     ],
     // 编译模块
-    mode:'development'
+    mode:'development',
+
+    // 开发服务器 devServe ：用来自动化（自动化编译，自动化打开浏览器，自动化浏览器刷新）
+    // 特点: 只会在内存中编译，不会进行输出
+    // 启动devServe的指令位npx webpack-dev-server
+
+    devServer: {
+        // 启动服务的目录（开发环境编译后的文件）
+        contentBase : resolve(__dirname,'dist'),
+        // 启动gzip压缩
+        compress: true,
+        // 端口号
+        port: 3000,
+        // open 当页面发生改变时 控制自动化更新 或者 打开新窗口 （热更新）
+        open: true
+    }
 }
