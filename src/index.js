@@ -17,9 +17,26 @@ import dataJson from './json/data.json'
 import './css/index.css'
 import './css/index.less'
 import './iconfont/iconfont.css'
+import print from './js/print.js'
+import list from './js/list.js'
+// import { mode } from '../webpack.config'
 function add(x,y){
     return x + y
 }
 console.log(add(1,2))
 console.log(dataJson)
-console.log('12312312312')
+
+console.log( print())
+console.log( list())
+
+if(module.hot){
+  //一但module上有hot 属性，说明开启了webpack的HMR功能 --> 要让HMR功能生效
+  module.hot.accept('./js/print.js',function(){
+    console.log(
+    print())
+  }),
+  module.hot.accept('./js/list.js',function(){
+    console.log(
+    list())
+  })
+}
