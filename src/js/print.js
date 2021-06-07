@@ -1,4 +1,4 @@
 function print(){
-    return 88
+    return 99
 }
 export default print

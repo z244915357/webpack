@@ -2,4 +2,5 @@ body{
     color:red;
     font-size:25px;
     background:yellow;
+    backface-visibility: hidden;
 }

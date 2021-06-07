@@ -15,6 +15,7 @@ index.js  webpack入口起点文件
 */ 
 import dataJson from './json/data.json'
 import './css/index.css'
+import './css/public.css'
 import './css/index.less'
 import './iconfont/iconfont.css'
 import print from './js/print.js'

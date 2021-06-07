@@ -31,7 +31,9 @@ js  文件需要进行模块监听配置否则更新某一个模块会重新加�
 注意：只能处理非入口文件的js 
 html 一般项目只有一个html文件所有不需要配置热模块更新
 6.webpack 性能优化
-### 开发环境 性能优化 
+### 开发环境  生产环境  性能优化  
+    优化打包构建速度
+    代码性能优化
     优化打包构建速度
     优化代码的调试功能  
     webpack HMR功能
@@ -50,7 +52,35 @@ html 一般项目只有一个html文件所有不需要配置热模块更新
       })
     }
 
-### 生产环境 性能优化
-    优化打包构建速度
-    代码性能优化
+    调试 source-map
+    inline- hidden- eval- cheap- cheap-module nosources- （source-map）
+    内联 
+    inline-source-map
+    eval-source-map
+    
+    
+
+    外部
+    source-map
+    hidden-source-map
+    cheap-source-map
+    cheap-mpdule-source-map
+    nosources-source-map
+   
+
+    内联编译快，在js 文件内部  测试环境使用内联 eval-source-map 
+    指出文件的错误位置 能看到源代码信息
+
+    生产环境根据是否需要隐藏源代码进行选择
+    隐藏源代码使用
+    nosources-source-map //有报错 全部隐藏 源代码和映射都隐藏
+    hidden-source-map  // 隐藏源代码 映射错误代码位置能找到
+
+    不隐藏源代码使用
+    source-map //运行快 展示错误信息和位置
+    cheap-module-source-map  运行快 展示错误信息和位置
+
+
+
+
 
