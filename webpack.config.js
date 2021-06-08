@@ -4,16 +4,43 @@ const { resolve } = require('path')
 const htmlWebpackplugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const optimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = 'production'
 module.exports = {
     // 使用webpack-cli 4.0版本 webpack-dev-server启动服务时 entry 默认会找寻src目录下的index.js文件
     // 不必使用指定绝对路劲  ./src/index.js   使用 entry: './src'即可
     // 当不使用webpack-dev-server时 ，使用手动打包指令 开发打包 npm run dev  packjson文件有注释  需要制定入口文件 entry : './src/index.js'
     entry: ['./src/index.js', './src/index.html'],
     output: {
-        filename: 'js/main.js',
+        filename: 'js/main.[contenthash:10].js',
         path: resolve(__dirname, 'dist')
     },
+
+    /**
+     * 缓存 babel 缓存 直接设置cacheDirectory:true
+     * 
+     * 文件资源缓存
+     * hash ： 每次webpack构建时会生产唯一的hash值,当文件变动时构建是文件的hash值会发生改变，文件不变时这hash值不发生变化
+     * 在读取文件时 文件hash值不变时 直接读取缓存文件js/css 文件 不用访问服务器重新获取，当hash值变化是，则重新向服务器请求文件
+     * （存在的问题： 当css 和 js 使用一个hash值时 ，重新打包，会导致所有缓存失效：可能我只改动过一个文件js，而css并未改动过）
+     * 
+     * chunkhash ： 根据chunk生成的hash值。如果构建打包来自于同一个chunk，那么hash值就一样(原因：css是引入到js文件种的，所有hash值还是一样) 
+     * 
+     * contenthash ： 根据文件类型生成hash值 （所有我们使用contenthash，确保文件的唯一性，打包时如果文件未发生变化hash值不变，如果文件改变则重新生产hash值），让上线代码缓存更好使
+     */
+
+
+
+    /**
+     *  tree shaking  去除无用代码
+     *  条件 ：必须使用es6模块化  ,  开启production 生产环境   
+     *  作用 ：减少代码体积 
+     * 
+     *  package.json 文件中配置
+     *  sideEffects： false  默认将所有资源进行tree shaking 处理
+     *  问题 （可能将css @babel/polyfill(副作用)处理干掉）
+     *  解决办法： "sideEffects":["*.css","*.less"]  将不需要处理的文件类型放置到数组中避免被tree chaking 处理
+     *  
+    */
     module: {
         rules: [
             {
@@ -30,7 +57,25 @@ module.exports = {
                             miniCssExtractPlugin.loader,
                             'css-loader',
                             'postcss-loader',
-                        ]
+                        ],
+                        // options:{
+                        //     outputPath:'css',
+                        //     // name:'[hash:10].[ext]'
+                        // }
+                    },
+                    // js缓存
+                    {
+                        test:/\.js$/,
+                        exclude:/node_module/,
+                        loader:'babel-loader',
+                        options:{
+                            presets:[
+
+                            ],
+                            // 开启babel缓存
+                            // 第二次构建时，会读取之前的缓存
+                            cacheDirectory:true
+                        }
                     },
                     // less-loader 处理less 类型的文件
                     {
@@ -96,9 +141,9 @@ module.exports = {
         // miniCssExtractPlugin 使用时不支持之体图标处理  使用指定打包路劲时字体图标文件打包后引入失效，建议使用默认打包路劲
         // 没有之体图标类型文件时  可使用 filename:'**/**.css'  new miniCssExtractPlugin({  filename:'**/**.css'   })
         new miniCssExtractPlugin(
-            // {
-            //     filename:'css/built.css'
-            // }
+            {
+                filename:'css/built.[contenthash:10].css'
+            }
         ),
         new optimizeCssAssetsWebpackPlugin()
     ],
@@ -115,7 +160,7 @@ module.exports = {
         // 启动gzip压缩
         compress: true,
         // 端口号
-        port: 8080,
+        port: 3000,
         // open 当页面发生改变时 控制自动化更新 或者 打开新窗口 （热更新）
         open: true,
         hot: true //热更新  只更新被修改的文件其他文件不做编译 开发环境可以提高编译速度

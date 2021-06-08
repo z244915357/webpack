@@ -80,6 +80,28 @@ html 一般项目只有一个html文件所有不需要配置热模块更新
     source-map //运行快 展示错误信息和位置
     cheap-module-source-map  运行快 展示错误信息和位置
 
+### 缓存 cacheDirectory ： false  编译js/css 当文件未发生变化时使用缓存，不需要向服务器请求资源，提高构建效率，减小服务器压力
+
+出现的问题 不配置js/css 文件的hash值，无法监测文件是否有修改过
+
+hash： [hash:10] 配置普通hash值，js/css 文件有更改时会更新文件的hash值
+问题 js/Css公用一个hash值，重新构建时缓存会失效 ， 可能我之改动了一个文件，但是所有缓存都会失效
+
+chunkhash [chunkhash:10] css引入到js 中， hash值公用，重新构建，hash值都会改变，也处理不了的单独文件hash更新，其他文件缓存同样失效
+
+contenthash [contenthash: 10] 根据文件生产唯一的hash值，只有文件改动时，才生成新的hash值，其他文件不受影响，生产环境使用（缓存更友好）
+
+### 树摇 tree chaking 使用
+
+使用必备 打包时处理掉无用的内容 （比如注册的方法，并未使用，打包时会处理过滤掉这些不起作用的垃圾代码，打包后项目体积更小）
+
+es6模块化  production（生产环境）
+
+在package.json 文件中进行配置即可
+
+"slideEffects":false (默认对所有文件进行tree shaking处理，但是webpack版本不同，有些会处理掉 css @babel/polyfill 等插件，所有我们通过下面的配置，指定那些类型文件不进行tree shaking 处理，避免出现问题)
+
+"slideEffects":["*.css",".less"] （将不需要使用tree shaking 的文件类型写入到数组即可）
 
 
 
